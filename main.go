@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+// Function to handle hello end point
+
 func heolloHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/hello" {
 		http.Error(w, "404 not found", http.StatusNotFound)
@@ -16,13 +18,15 @@ func heolloHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(w, "Hello......!")
 }
+
+// Main function
 func main() {
 	fileServer := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fileServer)
 	http.HandleFunc("/hello", heolloHandler)
-	fmt.Println("Starting server at port 8080")
+	fmt.Println("Starting server at port 8443")
+	// You can change listening port here
 	if err := http.ListenAndServe(":8443", nil); err != nil {
 		log.Fatal(err)
 	}
-
 }
