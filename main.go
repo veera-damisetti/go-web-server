@@ -33,3 +33,9 @@ func main() {
 	}
 
 }
+
+// You can upload any file to  the directory static, so that you can download the file from webserver
+
+// Make sure to enable the listening port in firewalld
+
+// Or disable firewalld
