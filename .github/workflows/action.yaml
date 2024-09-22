@@ -1,0 +1,23 @@
+name: Validate PR Title
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, edited]
+
+jobs:
+  validate-pr-name:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR Title
+        id: check_pr_title
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          if [[ ! "$PR_TITLE" =~ ^(fix|doc|feat|chore|perf|test): ]]; then
+            echo "Invalid PR title: $PR_TITLE"
+            exit 1
+          else
+            echo "Valid PR title: $PR_TITLE"
+          fi
