@@ -26,6 +26,7 @@ jobs:
           else
             echo "No approval comment."
             exit 0
+          fi
 
       - name: Add 'approved' label
         if: steps.check_approval_comment.outputs.approved == 'true'
