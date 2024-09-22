@@ -1,3 +1,4 @@
+---
 name: Validate PR Title
 
 on:
@@ -21,3 +22,19 @@ jobs:
           else
             echo "Valid PR title: $PR_TITLE"
           fi
+  validate-pr-description:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR Description
+        id: check_pr_description
+        run: |
+          PR_BODY="${{ github.event.pull_request.body }}"
+          if [[ -z "$PR_BODY" ]]; then
+            echo "PR description is missing."
+            exit 1
+          else
+            echo "PR description provided."
+          fi
+  
+ 

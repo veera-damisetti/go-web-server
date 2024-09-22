@@ -1,0 +1,37 @@
+---
+name: Add 'Approved' Label on /approve Comment
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  add-approved-label:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if comment contains /approve
+        id: check_approval_comment
+        run: |
+          COMMENT_BODY="${{ github.event.comment.body }}"
+          ISSUE_URL="${{ github.event.issue.pull_request.url }}"
+          
+          if [[ -z "$ISSUE_URL" ]]; then
+            echo "This is not a pull request comment."
+            exit 0
+          fi
+          
+          if [[ "$COMMENT_BODY" == "/approve" ]]; then
+            echo "Approval comment found."
+            echo "::set-output name=approved::true"
+          else
+            echo "No approval comment."
+            exit 0
+          fi
+
+      - name: Add 'approved' label
+        if: steps.check_approval_comment.outputs.approved == 'true'
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: approved
